@@ -1,0 +1,13 @@
+﻿@layout LoginLayout
+@page "/login"
+@using PersonalSite.Application.DTOs.Account
+@using PersonalSite.WebUI.Client.Interfaces
+@inject IAuthenticationService AuthenticationService
+
+<RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+
+    <RadzenTemplateForm Data=@("LoginWithRemember")>
+        <RadzenLogin Login="(args) => OnLogin(args)" AllowRememberMe="true" AllowResetPassword="false" AllowRegister="false" FormFieldVariant="Variant.Filled" />
+    </RadzenTemplateForm>
+
+</RadzenCard>

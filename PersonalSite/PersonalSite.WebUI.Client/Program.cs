@@ -1,6 +1,12 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using PersonalSite.WebUI.Client.Authentication;
+using PersonalSite.WebUI.Client.Interfaces;
+using PersonalSite.WebUI.Client.Services;
 using Radzen;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace PersonalSite.WebUI.Client
 {
@@ -14,7 +20,21 @@ namespace PersonalSite.WebUI.Client
 
             builder.Services.AddRadzenComponents();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7095/api/")
+            }
+            .EnableIntercept(sp));
+
+            builder.Services.AddHttpClientInterceptor();
+
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddScoped<IHttpService, HttpService>();
+            builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            builder.Services.AddScoped<HttpInterceptorService>();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
         }

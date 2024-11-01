@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace PersonalSite.Application.DTOs.Account
+﻿namespace PersonalSite.Application.DTOs.Account
 {
     public class AuthenticationResponse
     {
@@ -10,7 +8,6 @@ namespace PersonalSite.Application.DTOs.Account
         public List<string> Roles { get; set; } = new List<string>();
         public bool IsVerified { get; set; }
         public string JWToken { get; set; } = string.Empty;
-        [JsonIgnore]
         public string RefreshToken { get; set; } = string.Empty;
     }
 }

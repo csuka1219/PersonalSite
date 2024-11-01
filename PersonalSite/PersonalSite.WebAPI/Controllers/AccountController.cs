@@ -3,7 +3,8 @@ using PersonalSite.Application.Common.Interfaces;
 using PersonalSite.Application.DTOs.Account;
 
 namespace PersonalSite.WebAPI.Controllers;
-
+[Route("api/[controller]")]
+[ApiController]
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
@@ -16,5 +17,11 @@ public class AccountController : Controller
     public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
     {
         return Ok(await _accountService.AuthenticateAsync(request));
+    }
+
+    [HttpPost("test")]
+    public async Task<IActionResult> Test()
+    {
+        return Ok("ok");
     }
 }

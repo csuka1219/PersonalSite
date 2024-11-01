@@ -1,0 +1,9 @@
+﻿@page "/logout"
+@inject IAuthenticationService authenticationService
+
+@code {
+    protected override async void OnInitialized()
+    {
+        await authenticationService.Logout();
+    }
+}
