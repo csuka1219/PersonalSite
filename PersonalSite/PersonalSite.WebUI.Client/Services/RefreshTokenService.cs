@@ -19,7 +19,7 @@ public class RefreshTokenService : IRefreshTokenService
         var authState = await _authProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        var exp = user.FindFirst(c => c.Type.Equals("exp")).Value;
+        var exp = user.FindFirst(c => c.Type.Equals("exp"))!.Value;
         var expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
 
         var timeUTC = DateTime.UtcNow;

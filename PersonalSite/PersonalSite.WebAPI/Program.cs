@@ -1,9 +1,11 @@
 
+using PersonalSite.Infrastructure.Persistence;
+
 namespace PersonalSite.WebAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,12 @@ namespace PersonalSite.WebAPI
 
             app.UseAuthorization();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+                await initialiser.InitialiseAsync();
+                //await initialiser.SeedAsync();
+            }
 
             app.MapControllers();
 

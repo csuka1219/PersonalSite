@@ -18,10 +18,4 @@ public class AccountController : Controller
     {
         return Ok(await _accountService.AuthenticateAsync(request));
     }
-
-    [HttpPost("test")]
-    public async Task<IActionResult> Test()
-    {
-        return Ok("ok");
-    }
 }

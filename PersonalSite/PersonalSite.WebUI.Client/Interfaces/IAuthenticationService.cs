@@ -6,6 +6,5 @@ public interface IAuthenticationService
 {
     Task Login(AuthenticationRequest authenticationRequest);
     Task Logout();
-    Task Test();
     Task<string> RefreshToken();
 }

@@ -35,18 +35,19 @@ public class AuthenticationService : IAuthenticationService
         await _localStorage.RemoveItemAsync("refreshToken");
         _navigationManager.NavigateTo("login");
     }
-    public async Task Test()
-    {
-        string res = await _httpService.Post<string>("Account/test", null);
-    }
 
     public async Task<string> RefreshToken()
     {
         var token = await _localStorage.GetItemAsync<string>("authToken");
         var refreshToken = await _localStorage.GetItemAsync<string>("refreshToken");
 
+        if (token == null || refreshToken == null)
+        {
+            throw new InvalidOperationException("Token or RefreshToken is missing");
+        }
+
         var tokenDto = new RefreshTokenDto { Token = token, RefreshToken = refreshToken };
-        //var bodyContent = new StringContent(tokenDto, Encoding.UTF8, "application/json");
+
 
         var result = await _httpService.Post<AuthenticationResponse>("token/refresh", tokenDto);
 

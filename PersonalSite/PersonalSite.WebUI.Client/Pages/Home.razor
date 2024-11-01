@@ -1,20 +1,14 @@
 ﻿@page "/"
 @attribute [Authorize(Roles = "Owner")]
-<RadzenButton Click="Test">test</RadzenButton>
 good
 
 @code{
     [Inject]
-    public HttpInterceptorService Interceptor { get; set; }
-    [Inject]
-    public IAuthenticationService auth { get; set; }
+    public HttpInterceptorService Interceptor { get; set; } = default!;
     protected async override Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         Interceptor.RegisterEvent();
     }
 
-    private void Test()
-    {
-        auth.Test();
-    }
 }
