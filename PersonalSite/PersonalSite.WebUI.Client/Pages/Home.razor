@@ -1,14 +1,3 @@
 ﻿@page "/"
 @attribute [Authorize(Roles = "Owner")]
 good
-
-@code{
-    [Inject]
-    public HttpInterceptorService Interceptor { get; set; } = default!;
-    protected async override Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        Interceptor.RegisterEvent();
-    }
-
-}

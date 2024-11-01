@@ -53,7 +53,7 @@ public class HttpInterceptorService
                     message = "The requested resorce was not found.";
                     break;
                 case HttpStatusCode.Unauthorized:
-                    _navManager.NavigateTo("/unauthorized");
+                    _navManager.NavigateTo("/logout");
                     message = "User is not authorized";
                     break;
                 default:
