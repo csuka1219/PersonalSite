@@ -52,6 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             services.AddTransient<IAccountService, AccountService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
 
             return services;
         }

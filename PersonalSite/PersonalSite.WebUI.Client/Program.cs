@@ -32,6 +32,7 @@ namespace PersonalSite.WebUI.Client
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IHttpService, HttpService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            builder.Services.AddScoped<IFileSystemService, FileSystemService>();
             builder.Services.AddScoped<HttpInterceptorService>();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddBlazoredLocalStorage();
