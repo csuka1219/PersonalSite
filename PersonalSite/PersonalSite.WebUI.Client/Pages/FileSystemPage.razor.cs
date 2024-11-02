@@ -7,6 +7,7 @@ using PersonalSite.Application.DTOs.File;
 using System;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using System.Web;
 
 namespace PersonalSite.WebUI.Client.Pages;
 
@@ -56,7 +57,8 @@ public partial class FileSystemPage : IDisposable
             if (file.FullPath == ".")
                 file.FullPath = string.Empty;
 
-            await fileSystemService.DeleteFile($"{file.FullPath}%{file.Name}");
+            string encodedParam = HttpUtility.UrlEncode($"{file.FullPath}/{file.Name}");
+            await fileSystemService.DeleteFile(encodedParam);
             await SetFileSystemEntries();
         }
         catch (Exception e)
@@ -77,7 +79,8 @@ public partial class FileSystemPage : IDisposable
             if (file.FullPath == ".")
                 file.FullPath = string.Empty;
 
-            await fileSystemService.DownloadFile($"{file.FullPath}%{file.Name}");
+            string encodedParam = HttpUtility.UrlEncode($"{file.FullPath}/{file.Name}");
+            await fileSystemService.DownloadFile(encodedParam);
         }
         catch (Exception e)
         {

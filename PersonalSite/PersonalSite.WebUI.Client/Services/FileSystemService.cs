@@ -22,7 +22,7 @@ public class FileSystemService : IFileSystemService
     }
     public async Task DeleteFile(string fileName)
     {
-        await _httpService.Delete<int>($"file/{fileName}");
+        await _httpService.Delete<string>($"file/{fileName}");
     }
 
     public async Task MoveFile(MoveFileRequest moveFileRequest)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalSite.Application.Common.Interfaces;
 using PersonalSite.Application.DTOs.File;
+using System.Web;
 
 namespace PersonalSite.WebAPI.Controllers;
 
@@ -48,9 +49,8 @@ public class FileController : ControllerBase
     [HttpGet("{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)
     {
-        fileName = fileName.Replace('%', '/');
-        if (fileName.StartsWith("/"))
-            fileName = fileName.Substring(1);
+        fileName = HttpUtility.UrlDecode(fileName);
+        fileName = fileName.TrimStart('/');
         var fileStream = await _fileStorageService.GetFileAsync(fileName);
 
         if (fileStream == null)
@@ -62,16 +62,15 @@ public class FileController : ControllerBase
     [HttpDelete("{fileName}")]
     public async Task<IActionResult> DeleteFile(string fileName)
     {
-        fileName = fileName.Replace('%', '/');
-        if (fileName.StartsWith("/"))
-            fileName = fileName.Substring(1);
+        fileName = HttpUtility.UrlDecode(fileName);
+        fileName = fileName.TrimStart('/');
 
         var deleted = await _fileStorageService.DeleteFileAsync(fileName);
 
         if (!deleted)
             return NotFound();
 
-        return Ok(1);
+        return Ok("File deleted succesfully");
     }
 
     [HttpGet("hierarchy")]
