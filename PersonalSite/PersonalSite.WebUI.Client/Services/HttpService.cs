@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using PersonalSite.WebUI.Client.Interfaces;
 using System.Net;
 using System.Net.Http.Json;
@@ -30,6 +31,10 @@ public class HttpService : IHttpService
     {
         var request = new HttpRequestMessage(HttpMethod.Get, uri);
         return await sendRequest<T>(request);
+    }
+    public async Task<HttpResponseMessage> GetBasic(string uri)
+    {
+        return await _httpClient.GetAsync(uri);
     }
 
     public async Task<T> Post<T>(string uri, object value)

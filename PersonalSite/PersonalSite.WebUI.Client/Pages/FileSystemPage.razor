@@ -2,11 +2,12 @@
 @attribute [Authorize(Roles = "Owner")]
 
 <RadzenButton Click="DeleteFile">Delete</RadzenButton>
+<RadzenButton Click="DownloadFile">Download</RadzenButton>
 
 <RadzenRow class="rz-p-0 rz-p-lg-12">
     <RadzenColumn Size="12" SizeLG="6" OffsetLG="3">
         <RadzenCard>
-            <RadzenTree @bind-Value=@selection Data="@fileSystemEntries" Expand="@LoadFiles" Style="width: 100%; height: 300px">
+            <RadzenTree @bind-Value=@selection Data="@fileSystemEntries" Expand="@LoadFiles" ItemRender="ItemRender" Style="width: 100%; height: 300px">
                 <RadzenTreeLevel Text="@GetTextForNode" Template="@FileOrFolderTemplate" />
             </RadzenTree>
         </RadzenCard>
@@ -16,6 +17,6 @@
 <RadzenColumn Size="12" SizeMD="4">
     <RadzenCard Variant="Variant.Outlined">
         <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Multiple files upload</RadzenText>
-        <RadzenUpload Multiple="true" Icon="upload" ChooseText="" Url="https://localhost:7095/api/file" Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+        <RadzenUpload Multiple="true" Icon="upload" Complete="OnUploadCompleted" ChooseText="" Url="https://localhost:7095/api/file" Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
     </RadzenCard>
 </RadzenColumn>

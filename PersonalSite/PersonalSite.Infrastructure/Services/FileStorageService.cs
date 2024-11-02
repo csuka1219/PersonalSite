@@ -1,4 +1,5 @@
-﻿using PersonalSite.Application.Common.Interfaces;
+﻿using Azure.Core;
+using PersonalSite.Application.Common.Interfaces;
 using PersonalSite.Application.DTOs.File;
 
 namespace PersonalSite.Infrastructure.Services;
@@ -54,6 +55,19 @@ public class FileStorageService : IFileStorageService
         }
 
         return Task.FromResult(false);
+    }
+
+    public Task<bool> MoveFileAsync(MoveFileRequest request)
+    {
+        var currentFilePath = Path.Combine(_basePath, request.CurrentFilePath.TrimStart('/'));
+        var newLocationPath = Path.Combine(_basePath, request.NewLocation.TrimStart('/'));
+
+        if (!System.IO.File.Exists(currentFilePath))
+            return Task.FromResult(false);
+
+        System.IO.File.Move(currentFilePath, newLocationPath);
+
+        return Task.FromResult(true);
     }
 
     public Task<FileSystemEntry> GetFileSystemHierarchyAsync()

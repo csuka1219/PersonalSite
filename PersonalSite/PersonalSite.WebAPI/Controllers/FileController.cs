@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PersonalSite.Application.Common.Interfaces;
+using PersonalSite.Application.DTOs.File;
 
 namespace PersonalSite.WebAPI.Controllers;
 
@@ -28,9 +29,28 @@ public class FileController : ControllerBase
         return Ok(savedFilePaths);
     }
 
+    [HttpPost("move")]
+    public async Task<IActionResult> MoveFile(MoveFileRequest request)
+    {
+        try
+        {
+            await _fileStorageService.MoveFileAsync(request);
+
+            return Ok("File moved successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to move file: {ex.Message}");
+        }
+    }
+
+
     [HttpGet("{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)
     {
+        fileName = fileName.Replace('%', '/');
+        if (fileName.StartsWith("/"))
+            fileName = fileName.Substring(1);
         var fileStream = await _fileStorageService.GetFileAsync(fileName);
 
         if (fileStream == null)
@@ -51,7 +71,7 @@ public class FileController : ControllerBase
         if (!deleted)
             return NotFound();
 
-        return NoContent();
+        return Ok(1);
     }
 
     [HttpGet("hierarchy")]
