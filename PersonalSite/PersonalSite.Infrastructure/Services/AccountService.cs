@@ -149,4 +149,16 @@ public class AccountService : IAccountService
 
         return principal;
     }
+
+    public async Task Generateuser()
+    {
+        var user = new ApplicationUser()
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserName = "csuka1219",
+            Email = "csukabalazs1219@gmail.com",
+        };
+        var a = await _userManager.CreateAsync(user, "20181031*Bogyó");
+        ;
+    }
 }
