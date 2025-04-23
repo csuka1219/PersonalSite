@@ -70,11 +70,16 @@ public class HttpService : IHttpService
             throw new Exception(error!["message"]);
         }
 
-        var res = await response.Content.ReadFromJsonAsync<T>();
-        if (res == null)
-            return default!;
-
-        return res;
-
+        if (typeof(T) == typeof(string))
+        {
+            // Read as plain string
+            var str = await response.Content.ReadAsStringAsync();
+            return (T)(object)str;
+        }
+        else
+        {
+            var res = await response.Content.ReadFromJsonAsync<T>();
+            return res == null ? default! : res;
+        }
     }
 }

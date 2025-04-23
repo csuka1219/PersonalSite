@@ -8,4 +8,5 @@ public interface IFileSystemService
     Task DownloadFile(string fileName);
     Task DeleteFile(string fileName);
     Task MoveFile(MoveFileRequest moveFileRequest);
+    Task CreateFolder(CreateFolderRequest folderRequest);
 }

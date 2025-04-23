@@ -45,6 +45,20 @@ public class FileController : ControllerBase
         }
     }
 
+    [HttpPost("CreateFolder")]
+    public async Task<IActionResult> CreateFolder(CreateFolderRequest folderRequest)
+    {
+        try
+        {
+            await _fileStorageService.CreateFolder(folderRequest.FolderPath);
+            return Ok("Folder created successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Failed to create folder: {ex.Message}");
+        }
+    }
+
 
     [HttpGet("{fileName}")]
     public async Task<IActionResult> DownloadFile(string fileName)

@@ -9,4 +9,5 @@ public interface IFileStorageService
     Task<bool> DeleteFileAsync(string fileName);
     Task<bool> MoveFileAsync(MoveFileRequest request);
     Task<FileSystemEntry> GetFileSystemHierarchyAsync();
+    Task<bool> CreateFolder(string folderPath);
 }
