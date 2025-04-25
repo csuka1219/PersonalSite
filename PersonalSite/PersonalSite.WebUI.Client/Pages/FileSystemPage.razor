@@ -17,6 +17,6 @@
 <RadzenColumn Size="12" SizeMD="4">
     <RadzenCard Variant="Variant.Outlined">
         <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Multiple files upload</RadzenText>
-        <RadzenUpload Multiple="true" Icon="upload" Complete="OnUploadCompleted" ChooseText="" Url="https://localhost:7095/api/file" Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
+        <RadzenUpload Multiple="true" Icon="upload" Complete="OnUploadCompleted" ChooseText="" Url="@GetApiUrl()" Style="width: 100%" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" />
     </RadzenCard>
 </RadzenColumn>

@@ -17,6 +17,8 @@ public partial class FileSystemPage : IDisposable
     public HttpInterceptorService Interceptor { get; set; } = default!;
     [Inject]
     public IFileSystemService fileSystemService { get; set; } = default!;
+    [Inject]
+    public IConfiguration configuration { get; set; } = default;
 
     private IEnumerable<FileSystemEntry> fileSystemEntries = new List<FileSystemEntry>();
     private object selection = default!;
@@ -159,5 +161,9 @@ public partial class FileSystemPage : IDisposable
         }
     };
 
+    private string GetApiUrl()
+    {
+        return configuration["ApiUrl"] + "File";
+    }
     public void Dispose() => Interceptor.DisposeEvent();
 }

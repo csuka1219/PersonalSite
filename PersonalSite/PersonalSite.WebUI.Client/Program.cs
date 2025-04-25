@@ -22,7 +22,7 @@ namespace PersonalSite.WebUI.Client
 
             builder.Services.AddScoped(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7095/api/")
+                BaseAddress = new Uri(builder.Configuration["ApiUrl"]!)
             }
             .EnableIntercept(sp));
 

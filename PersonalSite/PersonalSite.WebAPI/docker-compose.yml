@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: PersonalSite.WebAPI/Dockerfile
+    container_name: personal-site-api
+    ports:
+      - "8085:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    restart: unless-stopped
+    networks:
+      - personal-site-network
+
+  client:
+    build:
+      context: .
+      dockerfile: PersonalSite.WebUI.Client/Dockerfile
+    container_name: personal-site-client
+    ports:
+      - "8088:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+    networks:
+      - personal-site-network
+
+networks:
+  personal-site-network:
+    driver: bridge

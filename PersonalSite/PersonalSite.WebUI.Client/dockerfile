@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy project files
+COPY ["PersonalSite.WebUI.Client/PersonalSite.WebUI.Client.csproj", "PersonalSite.WebUI.Client/"]
+COPY ["PersonalSite.Domain/PersonalSite.Domain.csproj", "PersonalSite.Domain/"]
+COPY ["PersonalSite.Application/PersonalSite.Application.csproj", "PersonalSite.Application/"]
+
+# Restore dependencies
+RUN dotnet restore "PersonalSite.WebUI.Client/PersonalSite.WebUI.Client.csproj"
+
+# Copy the rest of the code
+COPY . .
+
+# Build and publish the application
+WORKDIR "/src/PersonalSite.WebUI.Client"
+RUN dotnet publish "PersonalSite.WebUI.Client.csproj" -c Release -o /app/publish
+
+# Use nginx to serve the static files
+FROM nginx:alpine AS final
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/publish/wwwroot .
+COPY PersonalSite.WebUI.Client/nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80

@@ -9,6 +9,7 @@ using PersonalSite.Domain.Settings;
 using PersonalSite.Infrastructure.Identity;
 using PersonalSite.Infrastructure.Persistence;
 using PersonalSite.Infrastructure.Services;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -19,7 +20,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                options.UseMySql(configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection")),
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

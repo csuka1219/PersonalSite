@@ -7,7 +7,8 @@ public static class ConfigureServices
         {
             options.AddPolicy("AllowSpecificOrigin",
                 builder => builder
-                    .WithOrigins("https://localhost:7080")
+                    .WithOrigins("http://89.116.106.135:8088",
+                                 "https://localhost:7080")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
