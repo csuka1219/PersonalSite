@@ -23,6 +23,7 @@ public partial class FileSystemPage : IDisposable
     private IEnumerable<FileSystemEntry> fileSystemEntries = new List<FileSystemEntry>();
     private object selection = default!;
     private FileSystemEntry draggedFile = default!;
+    private string folderName = string.Empty;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -34,6 +35,7 @@ public partial class FileSystemPage : IDisposable
     {
         try
         {
+            fileSystemEntries = null;
             var rootEntry = await fileSystemService.GetFileHierarchyAsync();
             if (rootEntry != null && rootEntry.Children != null)
             {
@@ -90,6 +92,29 @@ public partial class FileSystemPage : IDisposable
         }
     }
 
+    private async void CreateFolder()
+    {
+        try
+        {
+            FileSystemEntry? file = selection as FileSystemEntry;
+            string fullpath = file == null ? string.Empty : file.FullPath;
+
+            if (fullpath == ".")
+                fullpath = string.Empty;
+
+            CreateFolderRequest folderRequest = new CreateFolderRequest()
+            {
+                FolderPath = Path.Combine(fullpath, folderName)
+            };
+            await fileSystemService.CreateFolder(folderRequest);
+            await SetFileSystemEntries();
+        }
+        catch (Exception e)
+        {
+            //TODO toaster
+        }
+    }
+
     private void ItemRender(TreeItemRenderEventArgs args)
     {
         var file = (FileSystemEntry)args.Value;
@@ -112,13 +137,15 @@ public partial class FileSystemPage : IDisposable
 
         // Allow drop over any item including the root item.
         args.Attributes.Add("ondragover", "event.preventDefault()");
-        args.Attributes.Add("ondrop", EventCallback.Factory.Create<DragEventArgs>(this, () =>
+        args.Attributes.Add("ondrop", EventCallback.Factory.Create<DragEventArgs>(this, async () =>
         {
             try
             {
                 moveFileRequest.CurrentFilePath = $"{draggedFile.FullPath}/{draggedFile.Name}";
                 moveFileRequest.NewLocation = $"{file.FullPath}/{draggedFile.Name}";
-                fileSystemService.MoveFile(moveFileRequest);
+                await fileSystemService.MoveFile(moveFileRequest);
+                await SetFileSystemEntries();
+                draggedFile = null;
             }
             catch (Exception e)
             {

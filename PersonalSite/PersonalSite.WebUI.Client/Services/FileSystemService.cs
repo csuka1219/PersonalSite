@@ -48,4 +48,8 @@ public class FileSystemService : IFileSystemService
         }
         ;
     }
+    public async Task CreateFolder(CreateFolderRequest folderRequest)
+    {
+        await _httpService.Post<string>($"file/CreateFolder", folderRequest);
+    }
 }

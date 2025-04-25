@@ -9,6 +9,7 @@ public interface IAccountService
     Task<string> GenerateJWTokenString(dynamic user);
     string GenerateRefreshToken();
     ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+    Task Generateuser();
     //Task ForgotPassword(ForgotPasswordRequest model, string origin);
     //Task<Response<string>> ResetPassword(ResetPasswordRequest model);
 }

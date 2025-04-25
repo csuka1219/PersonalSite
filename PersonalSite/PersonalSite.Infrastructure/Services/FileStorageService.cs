@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.Extensions.Configuration;
 using PersonalSite.Application.Common.Interfaces;
 using PersonalSite.Application.DTOs.File;
 
@@ -6,10 +7,11 @@ namespace PersonalSite.Infrastructure.Services;
 
 public class FileStorageService : IFileStorageService
 {
-    private readonly string _basePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+    private readonly string _basePath;
 
-    public FileStorageService()
+    public FileStorageService(IConfiguration configuration)
     {
+        _basePath = configuration["FilesFolder"];
         Directory.CreateDirectory(_basePath);
     }
 
@@ -51,8 +53,14 @@ public class FileStorageService : IFileStorageService
         if (File.Exists(filePath))
         {
             File.Delete(filePath);
+            string folderPath = Path.GetDirectoryName(filePath);
+            if (!Directory.GetFiles(folderPath).Any())
+            {
+                Directory.Delete(folderPath);
+            }
             return Task.FromResult(true);
         }
+
 
         return Task.FromResult(false);
     }
@@ -66,6 +74,16 @@ public class FileStorageService : IFileStorageService
             return Task.FromResult(false);
 
         System.IO.File.Move(currentFilePath, newLocationPath);
+
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> CreateFolder(string folderPath)
+    {
+        if (System.IO.Directory.Exists(folderPath))
+            return Task.FromResult(false);
+
+        System.IO.Directory.CreateDirectory(Path.Combine(_basePath, folderPath));
 
         return Task.FromResult(true);
     }
